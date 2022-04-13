@@ -1,6 +1,7 @@
 # Szuno
 
 A toy language written in C89.
+TL;DR : prefix notation, like lisp, but without the parentheses because we use a fixed number of arguments for the functions.
 
 ## Goals
 The goals this little language are :
