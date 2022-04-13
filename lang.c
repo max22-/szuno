@@ -95,8 +95,7 @@ void display(result_t *r)
   }
 }
 
-
-/* Evaluation */
+/* Helper functions */
 
 #define check(x) { if((x).type == ERROR) return (x); }
 
@@ -118,7 +117,12 @@ int streq(result_t *a, const char *b)
   return 1;
 }
 
+#define is_printable(c) ((c) >= 0x20 && (c) <= 0x7e)
+#define is_digit(c) ((c) >= '0' && (c) <= '9')
 
+/* Evaluation */
+
+/* for space handling */
 result_t token(evaluator_t evaluator, const char *l, int idx)
 {
   int i = idx;
@@ -147,7 +151,10 @@ result_t integer(const char *l, int idx)
 result_t ident(const char *l, int idx)
 {
   int i = idx;
-  while(l[i] >= 'a' && l[i] <= 'z')
+  char c = l[i];
+  if(is_printable(c) && c != ' ' && c != '\"' && c != '\'' && !is_digit(c))
+    i++;
+  while(is_printable(l[i]) && l[i] != ' ')
     i++;
   if(i == idx)
     return make_error(idx);
@@ -163,7 +170,7 @@ result_t expr(const char *l, int idx)
   
   id = token(ident, l, idx);
   if(id.type != ERROR) {
-    if(streq(&id, "add")) {
+    if(streq(&id, "+")) {
       result_t e1 = expr(l, id.idx);
       result_t e2;
       check(e1);
@@ -171,7 +178,7 @@ result_t expr(const char *l, int idx)
       check(e2);
       return make_int(e1.i + e2.i, e2.idx);
     }
-    else if(streq(&id, "mul")) {
+    else if(streq(&id, "*")) {
       result_t e1 = expr(l, id.idx);
       result_t e2;
       check(e1);
