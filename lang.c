@@ -19,6 +19,8 @@ typedef struct {
   int idx;
 } result_t;
 
+typedef result_t (*evaluator_t)(const char*, int);
+
 /* Constructors */
 
 result_t make_error(int idx)
@@ -116,42 +118,50 @@ int streq(result_t *a, const char *b)
   return 1;
 }
 
-/* TODOOOOO: add skipspace */
+
+result_t token(evaluator_t evaluator, const char *l, int idx)
+{
+  int i = idx;
+  result_t res;
+  while(l[i] == ' ')
+    i++;
+  res = evaluator(l, i);
+  if(res.type != ERROR)
+    return res;
+  else
+    return make_error(idx);
+}
 
 result_t integer(const char *l, int idx)
 {
-  int i, start = idx, res = 0;
-  while(l[start] == ' ') start++;
-  i = start;
+  int i = idx, res = 0;
   while(l[i] >= '0' && l[i] <= '9') {
     res = res * 10 + l[i] - '0';
     i++;
   }
-  if(i == start)
+  if(i == idx)
     return make_error(idx);
   return make_int(res, i);
 }
 
 result_t ident(const char *l, int idx)
 {
-  int i, start = idx;
-  while(l[start] == ' ') start++;
-  i = start;
+  int i = idx;
   while(l[i] >= 'a' && l[i] <= 'z')
     i++;
   if(i == idx)
     return make_error(idx);
-  return make_ident(l, start, i - start, i);
+  return make_ident(l, idx, i - idx, i);
 }
 
 result_t expr(const char *l, int idx)
 {
   result_t id, i;
-  i = integer(l, idx);
+  i = token(integer, l, idx);
   if(i.type != ERROR)
     return i;
   
-  id = ident(l, idx);
+  id = token(ident, l, idx);
   if(id.type != ERROR) {
     if(streq(&id, "add")) {
       result_t e1 = expr(l, id.idx);
