@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdarg.h>
 
-#include "lang.h"
+#include "szuno.h"
 
 void error(const char *fmt, ...)
 {

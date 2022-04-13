@@ -1,13 +1,13 @@
 CFLAGS = -Wall -std=c89 -ggdb
-EXEC = prefix-lang
+EXEC = szuno
 
 all: $(EXEC)
 
-prefix-lang: lang.o main.o
-	$(CC) lang.o main.o -o $(EXEC)
+szuno: szuno.o main.o
+	$(CC) szuno.o main.o -o $(EXEC)
 
-lang.o: lang.c lang.h
-	$(CC) $(CFLAGS) -c lang.c -o lang.o
+szuno.o: szuno.c szuno.h
+	$(CC) $(CFLAGS) -c szuno.c -o szuno.o
 
 main.o: main.c
 	$(CC) $(CFLAGS) -c main.c -o main.o

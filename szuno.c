@@ -1,4 +1,4 @@
-#include "lang.h"
+#include "szuno.h"
 
 /* Data structures */
 
