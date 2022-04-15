@@ -1,34 +1,40 @@
-CFLAGS = -Wall -std=c89 -MMD -MP -ggdb
--include $(DEPS)
 EXEC = szuno
-SRCS = $(shell find src -name "*.c")
-OBJS = $(SRCS:src/%.c=build/%.o)
+BIN_DIR = $(PWD)/bin
+BUILD_DIR = $(PWD)/build
+SRC_DIRS = src
+
+SRCS = $(shell find $(SRC_DIRS) -name *.c)
+OBJS = $(SRCS:%=$(BUILD_DIR)/%.o)
 DEPS = $(OBJS:.o=.d)
 
-all: bin/$(EXEC)
+INC_DIRS = include
+INC_FLAGS := $(addprefix -I,$(INC_DIRS))
 
-bin:
+CFLAGS = $(INC_FLAGS) -Wall -MMD -MP -std=c89
+LDFLAGS =
+
+all: $(BIN_DIR)/$(EXEC)
+
+$(BIN_DIR):
 	mkdir -p bin
 
-build:
-	mkdir -p build
+$(BIN_DIR)/$(EXEC): $(OBJS) $(BIN_DIR)
+	$(CC) $(OBJS) -o $@ $(LDFLAGS)
 
-bin/$(EXEC): $(OBJS) bin
-	$(CC) $(OBJS) -o $@
-
-build/%.o: src/%.c build
-	$(CC) $(CFLAGS) $< -c -o $@
+$(BUILD_DIR)/%.c.o: %.c
+	mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) -c $< -o $@
 
 .PHONY: run format clean todo
 
-run: bin/$(EXEC)
-	bin/$(EXEC)
+run: $(BIN_DIR)/$(EXEC)
+	$(BIN_DIR)/$(EXEC)
 
 format:
 	find src/* -exec clang-format -i {} \;
 
 clean:
-	rm -rf build bin
+	rm -rf $(BUILD_DIR) $(BIN_DIR)/$(EXEC)
 
 todo:
 	@grep -r "TODO" --exclude="Makefile" || true
