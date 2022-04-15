@@ -1,10 +1,6 @@
 #include "szuno.h"
 #include "szuno-data.h"
 
-/* Data structures */
-
-/* Constructors */
-
 /* Display */
 
 void
