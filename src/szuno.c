@@ -1,67 +1,6 @@
 #include "szuno.h"
 #include "szuno-data.h"
 
-/* Display */
-
-void
-display(result_t *r)
-{
-	switch(r->type) {
-	case ERROR:
-		print("<error>\n");
-		break;
-	case NIL:
-		print("<nil>\n");
-		break;
-	case INT:
-		print("%d\n", r->i);
-		break;
-	case CHAR:
-		print("%c\n", r->c);
-		break;
-	case IDENT: {
-		int i;
-		for(i = 0; i < r->id.len; i++)
-			print("%c", r->id.ps[r->id.start + i]);
-		print("\n");
-		break;
-	}
-	default:
-		error("display(): unexpected type\n");
-	}
-}
-
-/* Helper functions */
-
-#define check(x) \
-	{ \
-		if((x).type == ERROR) return (x); \
-	}
-
-int
-streq(result_t *a, const char *b)
-{
-	int i;
-	if(a->type != IDENT) {
-		error("streq : expected string as argument\n");
-		return 0;
-	}
-	for(i = 0; i < a->id.len; i++) {
-		if(*b == 0)
-			return 0;
-		if(a->id.ps[a->id.start + i] != *b)
-			return 0;
-
-		b++;
-	}
-	return 1;
-}
-
-#define is_printable(c) ((c) >= 0x20 && (c) <= 0x7e)
-#define is_digit(c) ((c) >= '0' && (c) <= '9')
-
-/* Evaluation */
-
 /* for space handling */
 result_t
 token(evaluator_t evaluator, const char *l, int idx)
