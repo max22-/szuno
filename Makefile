@@ -28,6 +28,6 @@ clean:
 	rm -rf build bin
 
 todo:
-	@grep -r "TODO" --exclude="Makefile"
+	@grep -r "TODO" --exclude="Makefile" || true
 
 -include $(DEPS)
