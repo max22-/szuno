@@ -19,10 +19,13 @@ bin/$(EXEC): $(OBJS) bin
 build/%.o: src/%.c build
 	$(CC) $(CFLAGS) $< -c -o $@
 
-.PHONY: run clean todo
+.PHONY: run format clean todo
 
 run: bin/$(EXEC)
 	bin/$(EXEC)
+
+format:
+	find src/* -exec clang-format -i {} \;
 
 clean:
 	rm -rf build bin
