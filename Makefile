@@ -1,24 +1,33 @@
-CFLAGS = -Wall -std=c89 -ggdb
+CFLAGS = -Wall -std=c89 -MMD -MP -ggdb
+-include $(DEPS)
 EXEC = szuno
+SRCS = $(shell find src -name "*.c")
+OBJS = $(SRCS:src/%.c=build/%.o)
+DEPS = $(OBJS:.o=.d)
 
-all: $(EXEC)
+all: bin/$(EXEC)
 
-szuno: szuno.o main.o
-	$(CC) szuno.o main.o -o $(EXEC)
+bin:
+	mkdir -p bin
 
-szuno.o: szuno.c szuno.h
-	$(CC) $(CFLAGS) -c szuno.c -o szuno.o
+build:
+	mkdir -p build
 
-main.o: main.c
-	$(CC) $(CFLAGS) -c main.c -o main.o
+bin/$(EXEC): $(OBJS) bin
+	$(CC) $(OBJS) -o $@
+
+build/%.o: src/%.c build
+	$(CC) $(CFLAGS) $< -c -o $@
 
 .PHONY: run clean todo
 
-run: $(EXEC)
-	./$(EXEC)
+run: bin/$(EXEC)
+	bin/$(EXEC)
 
 clean:
-	rm -f *.o $(EXEC)
+	rm -rf build bin
 
 todo:
 	@grep -r "TODO" --exclude="Makefile"
+
+-include $(DEPS)
