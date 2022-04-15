@@ -20,3 +20,11 @@ typedef struct {
 } result_t;
 
 typedef result_t (*evaluator_t)(const char *, int);
+
+/* Constructors */
+
+result_t make_error(int);
+result_t make_nil(int);
+result_t make_int(int i, int idx);
+result_t make_char(char c, int idx);
+result_t make_ident(const char *l, int start, int len, int idx);
