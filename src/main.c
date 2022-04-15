@@ -3,30 +3,33 @@
 
 #include "szuno.h"
 
-void error(const char *fmt, ...)
+void
+error(const char *fmt, ...)
 {
-  va_list args;
-  va_start(args, fmt);
-  vfprintf(stderr, fmt, args);
-  va_end(args);
+	va_list args;
+	va_start(args, fmt);
+	vfprintf(stderr, fmt, args);
+	va_end(args);
 }
 
-void print(const char *fmt, ...)
+void
+print(const char *fmt, ...)
 {
-  va_list args;
-  va_start(args, fmt);
-  vprintf(fmt, args);
-  va_end(args);
+	va_list args;
+	va_start(args, fmt);
+	vprintf(fmt, args);
+	va_end(args);
 }
 
-int main(int argc, char *argv[])
+int
+main(int argc, char *argv[])
 {
-  char buffer[1024];
-  while(!feof(stdin)) {
-    printf("> ");
-    fflush(stdout);
-    fgets(buffer, sizeof(buffer), stdin);
-    eval(buffer);
-  }
-  return 0;
+	char buffer[1024];
+	while(!feof(stdin)) {
+		printf("> ");
+		fflush(stdout);
+		fgets(buffer, sizeof(buffer), stdin);
+		eval(buffer);
+	}
+	return 0;
 }
