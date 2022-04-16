@@ -91,7 +91,6 @@ command(const char *l, int idx)
 		display(&e);
 		return make_nil(e.idx);
 	} else {
-		display(&op);
 		error("invalid command\n");
 		return make_error(idx);
 	}
