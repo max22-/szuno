@@ -79,17 +79,17 @@ expr(const char *l, int idx)
 }
 
 result_t
-stmt(const char *l, int idx)
+command(const char *l, int idx)
 {
-	result_t command = ident(l, idx);
-	check(command);
-	if(streq(&command, "print")) {
-		result_t e = expr(l, command.idx);
+	result_t op = ident(l, idx);
+	check(op);
+	if(streq(&op, "print")) {
+		result_t e = expr(l, op.idx);
 		check(e);
 		display(&e);
 		return make_nil(e.idx);
 	} else {
-		display(&command);
+		display(&op);
 		error("invalid statement\n");
 		return make_error(idx);
 	}
@@ -98,7 +98,7 @@ stmt(const char *l, int idx)
 result_t
 program(const char *l, int idx)
 {
-	return stmt(l, idx);
+	return command(l, idx);
 }
 
 void
