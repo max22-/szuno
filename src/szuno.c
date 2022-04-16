@@ -67,12 +67,12 @@ expr(const char *l, int idx)
 			check(e2);
 			return make_int(e1.i * e2.i, e2.idx);
 		} else {
-			error("invalid operator\n");
+			error("invalid operator : ");
 			display(&id);
 			return make_error(idx);
 		}
 	} else {
-		error("parse error\n");
+		error("parse error");
 		return make_error(idx);
 	}
 }
@@ -91,7 +91,8 @@ command(const char *l, int idx)
 		display(&e);
 		return make_nil(e.idx);
 	} else {
-		error("invalid command\n");
+		error("invalid operator : ");
+		display(&op);
 		return make_error(idx);
 	}
 }
