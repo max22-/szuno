@@ -1,5 +1,4 @@
 #include "szuno.h"
-#include "szuno-data.h"
 
 int
 streq(result_t *a, const char *b)

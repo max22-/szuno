@@ -1,5 +1,4 @@
 #include "szuno.h"
-#include "szuno-data.h"
 
 void
 display(result_t *r)

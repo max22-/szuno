@@ -1,5 +1,4 @@
 #include "szuno.h"
-#include "szuno-data.h"
 
 /* for space handling */
 result_t

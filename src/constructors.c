@@ -1,4 +1,4 @@
-#include "szuno-data.h"
+#include "szuno.h"
 
 result_t
 make_error(int idx)
