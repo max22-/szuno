@@ -45,6 +45,13 @@ int is_digit(char c);
 void display(result_t *r);
 
 /* Evaluation */
+result_t token(evaluator_t evaluator, const char *l, int idx);
+result_t integer(const char *l, int idx);
+result_t ident(const char *l, int idx);
+result_t expr(const char *l, int idx);
+result_t command(const char *l, int idx);
+result_t program(const char *l, int idx);
+
 void eval(const char *);
 
 
@@ -52,5 +59,4 @@ void eval(const char *);
 void error(const char *, ...); 
 void print(const char *, ...);
 
-result_t
-builtin(const char *l, int idx);
+result_t user_builtin(const char *l, int idx);

@@ -3,6 +3,19 @@
 
 #include "szuno.h"
 
+int
+main(int argc, char *argv[])
+{
+	char buffer[1024];
+	while(!feof(stdin)) {
+		printf("> ");
+		fflush(stdout);
+		fgets(buffer, sizeof(buffer), stdin);
+		eval(buffer);
+	}
+	return 0;
+}
+
 void
 error(const char *fmt, ...)
 {
@@ -21,15 +34,14 @@ print(const char *fmt, ...)
 	va_end(args);
 }
 
-int
-main(int argc, char *argv[])
+result_t
+user_builtin(const char* l, int idx)
 {
-	char buffer[1024];
-	while(!feof(stdin)) {
-		printf("> ");
-		fflush(stdout);
-		fgets(buffer, sizeof(buffer), stdin);
-		eval(buffer);
+	result_t op = token(ident, l, idx);
+	check(op);
+	if(streq(&op, "hello")) {
+		printf("Hello, World !\n");
+		return make_nil(op.idx);
 	}
-	return 0;
+	return make_error(idx);
 }

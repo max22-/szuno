@@ -80,7 +80,10 @@ expr(const char *l, int idx)
 result_t
 command(const char *l, int idx)
 {
-	result_t op = ident(l, idx);
+	result_t b = user_builtin(l, idx);
+	if(b.type != ERROR)
+		return b;
+	result_t op = token(ident, l, idx);
 	check(op);
 	if(streq(&op, "print")) {
 		result_t e = expr(l, op.idx);
@@ -89,7 +92,7 @@ command(const char *l, int idx)
 		return make_nil(e.idx);
 	} else {
 		display(&op);
-		error("invalid statement\n");
+		error("invalid command\n");
 		return make_error(idx);
 	}
 }
