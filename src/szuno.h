@@ -54,9 +54,8 @@ result_t program(const char *l, int idx);
 
 void eval(const char *);
 
-
 /* To be provided by the user */
-void error(const char *, ...); 
+void error(const char *, ...);
 void print(const char *, ...);
 
 result_t user_builtin(const char *l, int idx);

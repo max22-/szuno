@@ -35,7 +35,7 @@ print(const char *fmt, ...)
 }
 
 result_t
-user_builtin(const char* l, int idx)
+user_builtin(const char *l, int idx)
 {
 	result_t op = token(ident, l, idx);
 	check(op);
